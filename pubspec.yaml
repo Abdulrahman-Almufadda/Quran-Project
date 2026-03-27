@@ -1,0 +1,43 @@
+name: aya_quran
+description: A simple Quran app similar to Aya
+publish_to: "none"
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+  google_fonts: ^6.2.1
+  flutter_svg: ^2.1.6
+
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  path_provider: ^2.1.2
+
+  provider: ^6.1.2
+  shared_preferences: ^2.2.2
+  just_audio: ^0.9.37
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.10.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/db/quran.db
+    - mushaf-pages-cleaned/
+    - assets/quran_icon.png
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: assets/quran_icon.png
+
+
