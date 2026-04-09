@@ -43,10 +43,10 @@ class _SplashScreenState extends State<SplashScreen> {
       final saved = prefs.getInt('last_read_page') ?? 1;
       final initial = (saved).clamp(1, 604);
       if (!mounted) return;
-      Navigator.of(context).pushReplacement(platformPageRoute(builder: (_) => QuranPageScreen(initialPage: initial)));
+      Navigator.of(context).pushReplacement(platformPageRoute(builder: (_) => QuranPageScreen(initialPage: initial, showBackButton: false)));
     } catch (_) {
       if (!mounted) return;
-      Navigator.of(context).pushReplacement(platformPageRoute(builder: (_) => const QuranPageScreen()));
+      Navigator.of(context).pushReplacement(platformPageRoute(builder: (_) => const QuranPageScreen(showBackButton: false)));
     }
   }
 

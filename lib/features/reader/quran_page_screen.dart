@@ -315,31 +315,37 @@ class _PageContent extends StatelessWidget {
 
         final svgStr = svgSnapshot.data;
         if (svgStr != null) {
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              final mq = MediaQuery.of(context);
-              final topBar = kToolbarHeight + mq.padding.top;
-              final bottomReserved = 64.0 + mq.padding.bottom;
-              final viewportHeight = mq.size.height - topBar - bottomReserved;
-              final availableWidth = constraints.maxWidth;
+          return InteractiveViewer(
+            key: ValueKey('page_svg_$pageNumber'),
+            minScale: 1.0,
+            maxScale: 4.0,
+            clipBehavior: Clip.none,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final mq = MediaQuery.of(context);
+                final topBar = kToolbarHeight + mq.padding.top;
+                final bottomReserved = 64.0 + mq.padding.bottom;
+                final viewportHeight = mq.size.height - topBar - bottomReserved;
+                final availableWidth = constraints.maxWidth;
 
-              // Render the SVG to fill the available reader area while
-              // preserving aspect ratio. Using BoxFit.contain ensures the
-              // entire page is visible and centered; it will scale up or
-              // down to fit within the viewport without distortion.
-              return SizedBox(
-                width: availableWidth,
-                height: viewportHeight,
-                child: SvgPicture.string(
-                  svgStr,
-                  allowDrawingOutsideViewBox: true,
+                // Render the SVG to fill the available reader area while
+                // preserving aspect ratio. Using BoxFit.contain ensures the
+                // entire page is visible and centered; it will scale up or
+                // down to fit within the viewport without distortion.
+                return SizedBox(
                   width: availableWidth,
                   height: viewportHeight,
-                  fit: BoxFit.contain,
-                  alignment: Alignment.center,
-                ),
-              );
-            },
+                  child: SvgPicture.string(
+                    svgStr,
+                    allowDrawingOutsideViewBox: true,
+                    width: availableWidth,
+                    height: viewportHeight,
+                    fit: BoxFit.contain,
+                    alignment: Alignment.center,
+                  ),
+                );
+              },
+            ),
           );
         }
 
