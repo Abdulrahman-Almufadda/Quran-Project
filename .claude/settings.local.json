@@ -28,7 +28,8 @@
       "PowerShell(git config --list)",
       "PowerShell($env:GITHUB_TOKEN; $env:GH_TOKEN)",
       "PowerShell($env:GITHUB_TOKEN)",
-      "PowerShell($env:GH_TOKEN)"
+      "PowerShell($env:GH_TOKEN)",
+      "Bash(flutter build *)"
     ]
   }
 }

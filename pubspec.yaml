@@ -1,5 +1,5 @@
-name: aya_quran
-description: A simple Quran app similar to Aya
+name: quran_kareem
+description: اقرأ القرآن الكريم كاملاً بخط المصحف الشريف
 publish_to: "none"
 
 environment:
@@ -39,5 +39,8 @@ flutter_icons:
   android: true
   ios: true
   image_path: assets/quran_icon.png
+  min_sdk_android: 21
+  adaptive_icon_background: "#0D5C2E"
+  adaptive_icon_foreground: assets/quran_icon.png
 
 

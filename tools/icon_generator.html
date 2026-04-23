@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Quran App Icon Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body { background:#111; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; margin:0; font-family:sans-serif; gap:20px; }
+  canvas { border-radius:20px; box-shadow:0 0 60px rgba(212,168,75,0.4); }
+  button { background:#D4A84B; color:#000; border:none; padding:14px 40px; border-radius:10px; font-size:16px; font-weight:bold; cursor:pointer; }
+  button:hover { background:#e8c060; }
+  p { color:#888; font-size:13px; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1024" height="1024"></canvas>
+<button onclick="download()">⬇ تحميل الأيقونة (1024×1024)</button>
+<p>افتح هذا الملف في Chrome — ثم اضغط تحميل — ثم ارفع الملف على Google Play</p>
+<script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+const W = 1024, H = 1024, cx = W/2, cy = H/2;
+
+// ── Background gradient ──────────────────────────────────────
+const bg = ctx.createRadialGradient(cx, cy-80, 100, cx, cy, 520);
+bg.addColorStop(0, '#1B6B3A');
+bg.addColorStop(0.6, '#0D5C2E');
+bg.addColorStop(1, '#073D1C');
+ctx.fillStyle = bg;
+roundRect(ctx, 0, 0, W, H, 120);
+ctx.fill();
+
+// ── Subtle texture lines ─────────────────────────────────────
+ctx.save();
+ctx.globalAlpha = 0.04;
+ctx.strokeStyle = '#ffffff';
+ctx.lineWidth = 1;
+for(let i = -W; i < W*2; i += 22) {
+  ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i+H, H); ctx.stroke();
+}
+ctx.restore();
+
+// ── Outer gold ring ──────────────────────────────────────────
+ctx.save();
+ctx.strokeStyle = '#D4A84B';
+ctx.lineWidth = 14;
+ctx.globalAlpha = 0.9;
+roundRect(ctx, 28, 28, W-56, H-56, 100);
+ctx.stroke();
+ctx.restore();
+
+// ── Inner thin gold ring ─────────────────────────────────────
+ctx.save();
+ctx.strokeStyle = '#D4A84B';
+ctx.lineWidth = 3;
+ctx.globalAlpha = 0.4;
+roundRect(ctx, 50, 50, W-100, H-100, 85);
+ctx.stroke();
+ctx.restore();
+
+// ── Corner ornaments ─────────────────────────────────────────
+drawCornerOrnament(ctx, 80, 80, 0);
+drawCornerOrnament(ctx, W-80, 80, Math.PI/2);
+drawCornerOrnament(ctx, W-80, H-80, Math.PI);
+drawCornerOrnament(ctx, 80, H-80, -Math.PI/2);
+
+// ── Islamic star pattern (center top) ────────────────────────
+drawIslamicStar(ctx, cx, 290, 68);
+
+// ── Open Quran book ──────────────────────────────────────────
+drawQuranBook(ctx, cx, cy - 10);
+
+// ── Arabic text: القرآن الكريم ───────────────────────────────
+ctx.save();
+ctx.font = "bold 90px 'Amiri', serif";
+ctx.fillStyle = '#D4A84B';
+ctx.textAlign = 'center';
+ctx.textBaseline = 'middle';
+ctx.shadowColor = 'rgba(0,0,0,0.6)';
+ctx.shadowBlur = 12;
+ctx.fillText('القرآن الكريم', cx, 830);
+ctx.restore();
+
+// ── Decorative line under text ───────────────────────────────
+ctx.save();
+ctx.strokeStyle = '#D4A84B';
+ctx.lineWidth = 2;
+ctx.globalAlpha = 0.5;
+ctx.beginPath(); ctx.moveTo(cx-180, 880); ctx.lineTo(cx+180, 880); ctx.stroke();
+ctx.restore();
+
+// ── Small dots row ───────────────────────────────────────────
+[cx-80, cx-40, cx, cx+40, cx+80].forEach(x => {
+  ctx.save();
+  ctx.fillStyle = '#D4A84B';
+  ctx.globalAlpha = 0.6;
+  ctx.beginPath(); ctx.arc(x, 905, 4, 0, Math.PI*2); ctx.fill();
+  ctx.restore();
+});
+
+// ─────────────────────────────────────────────────────────────
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y); ctx.arcTo(x+w, y, x+w, y+r, r);
+  ctx.lineTo(x+w, y+h-r); ctx.arcTo(x+w, y+h, x+w-r, y+h, r);
+  ctx.lineTo(x+r, y+h); ctx.arcTo(x, y+h, x, y+h-r, r);
+  ctx.lineTo(x, y+r); ctx.arcTo(x, y, x+r, y, r);
+  ctx.closePath();
+}
+
+function drawIslamicStar(ctx, x, y, r) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.globalAlpha = 0.7;
+  const points = 8;
+  ctx.beginPath();
+  for(let i = 0; i < points*2; i++) {
+    const angle = (i * Math.PI / points) - Math.PI/2;
+    const radius = i%2===0 ? r : r*0.42;
+    const px = Math.cos(angle)*radius, py = Math.sin(angle)*radius;
+    i===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
+  }
+  ctx.closePath();
+  ctx.fillStyle = '#D4A84B'; ctx.fill();
+  ctx.strokeStyle = '#8B6914'; ctx.lineWidth=2; ctx.stroke();
+  ctx.restore();
+}
+
+function drawCornerOrnament(ctx, x, y, rot) {
+  ctx.save();
+  ctx.translate(x, y); ctx.rotate(rot);
+  ctx.globalAlpha = 0.5;
+  ctx.strokeStyle = '#D4A84B'; ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(-30, 0); ctx.lineTo(0, 0); ctx.lineTo(0, 30);
+  ctx.stroke();
+  ctx.fillStyle = '#D4A84B';
+  ctx.beginPath(); ctx.arc(0, 0, 5, 0, Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+
+function drawQuranBook(ctx, x, y) {
+  ctx.save();
+  ctx.translate(x, y);
+  const W2=200, H2=250, curve=18;
+
+  // Shadow
+  ctx.shadowColor='rgba(0,0,0,0.5)'; ctx.shadowBlur=30; ctx.shadowOffsetY=10;
+
+  // Left page
+  const lg = ctx.createLinearGradient(-W2, -H2/2, 0, H2/2);
+  lg.addColorStop(0, '#e8d9b0'); lg.addColorStop(1, '#d4c48a');
+  ctx.fillStyle = lg;
+  ctx.beginPath();
+  ctx.moveTo(-W2, -H2/2+curve); ctx.arcTo(-W2, -H2/2, -W2+curve, -H2/2, curve);
+  ctx.lineTo(-6, -H2/2);
+  ctx.quadraticCurveTo(-2, 0, -6, H2/2);
+  ctx.lineTo(-W2+curve, H2/2); ctx.arcTo(-W2, H2/2, -W2, H2/2-curve, curve);
+  ctx.closePath(); ctx.fill();
+
+  // Right page
+  const rg = ctx.createLinearGradient(0, -H2/2, W2, H2/2);
+  rg.addColorStop(0, '#d4c48a'); rg.addColorStop(1, '#e8d9b0');
+  ctx.fillStyle = rg;
+  ctx.shadowColor='transparent';
+  ctx.beginPath();
+  ctx.moveTo(6, -H2/2);
+  ctx.lineTo(W2-curve, -H2/2); ctx.arcTo(W2, -H2/2, W2, -H2/2+curve, curve);
+  ctx.lineTo(W2, H2/2-curve); ctx.arcTo(W2, H2/2, W2-curve, H2/2, curve);
+  ctx.lineTo(6, H2/2);
+  ctx.quadraticCurveTo(2, 0, 6, -H2/2);
+  ctx.closePath(); ctx.fill();
+
+  // Center spine
+  const sg = ctx.createLinearGradient(-8, 0, 8, 0);
+  sg.addColorStop(0,'#8B6914'); sg.addColorStop(0.5,'#D4A84B'); sg.addColorStop(1,'#8B6914');
+  ctx.fillStyle = sg;
+  ctx.fillRect(-7, -H2/2, 14, H2);
+
+  // Lines on left page
+  ctx.strokeStyle = 'rgba(100,70,20,0.25)'; ctx.lineWidth=1.5;
+  for(let i=-4; i<=4; i++) {
+    const ly = i*26;
+    ctx.beginPath(); ctx.moveTo(-W2+30, ly); ctx.lineTo(-20, ly); ctx.stroke();
+  }
+  // Lines on right page
+  for(let i=-4; i<=4; i++) {
+    const ly = i*26;
+    ctx.beginPath(); ctx.moveTo(20, ly); ctx.lineTo(W2-30, ly); ctx.stroke();
+  }
+
+  // Small star on left page center
+  ctx.globalAlpha = 0.4;
+  drawIslamicStar(ctx, -W2/2, 0, 22);
+  ctx.globalAlpha = 0.4;
+  drawIslamicStar(ctx, W2/2, 0, 22);
+
+  ctx.restore();
+}
+
+function download() {
+  const a = document.createElement('a');
+  a.download = 'quran_app_icon_1024.png';
+  a.href = c.toDataURL('image/png');
+  a.click();
+}
+</script>
+</body>
+</html>
