@@ -2,10 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/widgets/platform_adaptive.dart';
-import '../reader/quran_page_screen.dart';
+import '../landing/landing_screen.dart';
 
 /// Simple splash/loading screen that shows the provided icon and then
 /// hands off to the reader entry screen which restores the last-read page.
@@ -38,16 +37,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _goNext() async {
     if (!mounted) return;
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final saved = prefs.getInt('last_read_page') ?? 1;
-      final initial = (saved).clamp(1, 604);
-      if (!mounted) return;
-      Navigator.of(context).pushReplacement(platformPageRoute(builder: (_) => QuranPageScreen(initialPage: initial, showBackButton: false)));
-    } catch (_) {
-      if (!mounted) return;
-      Navigator.of(context).pushReplacement(platformPageRoute(builder: (_) => const QuranPageScreen(showBackButton: false)));
-    }
+    Navigator.of(context).pushReplacement(
+      platformPageRoute(builder: (_) => const LandingScreen()),
+    );
   }
 
   @override

@@ -11,6 +11,7 @@ import '../../core/models/ayah.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/svg/svg_loader.dart';
 import '../search/search_screen.dart';
+import '../landing/landing_screen.dart';
 
 const String _kLastReadPageKey = 'last_read_page';
 
@@ -49,33 +50,6 @@ class _QuranPageScreenState extends State<QuranPageScreen> with WidgetsBindingOb
       }
     });
     WidgetsBinding.instance.addObserver(this);
-    // Additionally, attempt to restore from SharedPreferences here as a
-    // fallback in case ReaderEntryScreen didn't provide the correct value
-    // (covers edge cases where storage was written after the previous run
-    // or lifecycle events were not delivered).
-    _restoreSavedPage();
-  }
-
-  Future<void> _restoreSavedPage() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final saved = prefs.getInt(_kLastReadPageKey) ?? 1;
-      // ignore: avoid_print
-      print('[Reader] _restoreSavedPage found=$saved initial=${widget.initialPage}');
-      final target = (saved).clamp(1, QuranRepository.totalPages);
-      final targetIndex = target - 1;
-      if (_pageController.hasClients) {
-        _pageController.jumpToPage(targetIndex);
-      } else {
-        // if not yet attached, set the controller's initial page by
-        // creating a new controller and replacing the old one.
-        _pageController.dispose();
-        _pageController = PageController(initialPage: targetIndex);
-        setState(() {});
-      }
-    } catch (e) {
-      // ignore errors
-    }
   }
 
   void _showGoToPage(BuildContext context) {
@@ -205,6 +179,15 @@ class _QuranPageScreenState extends State<QuranPageScreen> with WidgetsBindingOb
             : null,
         actions: [
           IconButton(
+            icon: const Icon(Icons.home_rounded),
+            tooltip: 'الرئيسية',
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                platformPageRoute(builder: (_) => const LandingScreen()),
+              );
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.list),
             tooltip: 'قائمة السور',
             onPressed: () async {
@@ -242,10 +225,6 @@ class _QuranPageScreenState extends State<QuranPageScreen> with WidgetsBindingOb
           final pageNumber = index + 1;
           return _PageContent(pageNumber: pageNumber, pageController: _pageController);
         },
-      ),
-      bottomNavigationBar: _PageIndicator(
-        controller: _pageController,
-        onTap: () => _showGoToPage(context),
       ),
     );
   }
