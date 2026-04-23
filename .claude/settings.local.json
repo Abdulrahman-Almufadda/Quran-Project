@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter devices *)",
+      "Bash(flutter run *)",
+      "Bash(flutter analyze *)",
+      "Bash(taskkill /F /IM dart.exe)",
+      "Bash(taskkill /F /IM flutter_tools.snapshot)",
+      "PowerShell(Get-Process | Where-Object { $_.Name -match 'dart|flutter' } | Select-Object Id, Name, CPU)",
+      "PowerShell(Get-Process | Where-Object { $_.Name -match 'dart' } | Stop-Process -Force; Write-Output \"killed\")",
+      "PowerShell(Get-Process | Where-Object { $_.Name -match 'dart' } | Stop-Process -Force; Write-Output \"done\")",
+      "PowerShell(Get-Process | Where-Object { $_.Name -match 'dart' } | Stop-Process -Force -ErrorAction SilentlyContinue; Write-Output \"done\")",
+      "Bash(flutter clean *)",
+      "Bash(start ms-settings:developers)",
+      "Bash(./gradlew --stop)",
+      "Bash(./gradlew assembleDebug --stacktrace)",
+      "Bash(java -version)",
+      "Bash(flutter doctor *)",
+      "Bash(\"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\\\\bin\\\\java.exe\" -version)",
+      "Bash(JAVA_HOME=\"C:\\\\Program Files\\\\Android\\\\Android Studio\\\\jbr\" flutter run -d emulator-5554)",
+      "Bash(flutter config *)",
+      "Bash(grep -v \"^$\")",
+      "PowerShell(Test-NetConnection -ComputerName 127.0.0.1 -Port 80 -ErrorAction SilentlyContinue)",
+      "PowerShell(ping 127.0.0.1 -n 1)",
+      "Bash(./gradlew assembleDebug --stacktrace --info)",
+      "PowerShell(gh auth status 2>&1)",
+      "PowerShell(git config --global credential.helper 2>&1)",
+      "PowerShell(git config --list)",
+      "PowerShell($env:GITHUB_TOKEN; $env:GH_TOKEN)",
+      "PowerShell($env:GITHUB_TOKEN)",
+      "PowerShell($env:GH_TOKEN)"
+    ]
+  }
+}
