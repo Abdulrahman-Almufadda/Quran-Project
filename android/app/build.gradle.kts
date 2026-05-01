@@ -17,7 +17,7 @@ if (keyPropertiesFile.exists()) {
 
 android {
     namespace = "sa.almufadda.quran"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 34
     ndkVersion = "28.2.13676358"
 
     compileOptions {
@@ -48,8 +48,8 @@ android {
 
     defaultConfig {
         applicationId = "sa.almufadda.quran"
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdk = 21
+        targetSdk = 34
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
